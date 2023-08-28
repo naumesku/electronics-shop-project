@@ -35,23 +35,26 @@ class Item:
         """
         Применяет установленную скидку для конкретного товара.
         """
-        self.price *= self.pay_rate
-
+        discont_prise = self.price * self.pay_rate
+        return discont_prise
 
     @property
     def name(self):
         return self.__name
     @name.setter
     def name(self, name):
+        if len(name) > 10:
+            print('Длина наименования товара превышает 10 символов')
         self.__name = name[:10]
 
     @classmethod
     def instantiate_from_csv(cls, path):
-        with open(os.path.join('..', path), newline='') as csvfile:
+        path_end = path.split('/')
+        file = Path(__file__).parent.parent.joinpath(path_end[0]).joinpath(path_end[1])
+        # with open(os.path.join('..', path_end[0], path_end[1]), newline='') as csvfile:
+        with open(os.path.join(file), newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
-                # item = cls(row['name'], row['price'], row['quantity'])
-                # cls.all.append(item)
                 cls.all.append(cls(row['name'], row['price'], row['quantity']))
 
     @staticmethod
