@@ -1,7 +1,6 @@
 import os, csv
 from pathlib import Path
 
-
 class Item:
     """
     Класс для представления товара в магазине.
@@ -17,10 +16,15 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
-        self.__name = name
+        self.name = name
         self.price = price
         self.quantity = quantity
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
+
+    def __str__(self) -> str:
+        return str(self.__name)
 
     def calculate_total_price(self) -> float:
         """
@@ -41,6 +45,7 @@ class Item:
     @property
     def name(self):
         return self.__name
+
     @name.setter
     def name(self, name):
         if len(name) > 10:
@@ -51,7 +56,6 @@ class Item:
     def instantiate_from_csv(cls, path):
         path_end = path.split('/')
         file = Path(__file__).parent.parent.joinpath(path_end[0]).joinpath(path_end[1])
-        # with open(os.path.join('..', path_end[0], path_end[1]), newline='') as csvfile:
         with open(os.path.join(file), newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
