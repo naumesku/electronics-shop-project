@@ -5,6 +5,11 @@ from src.item import Item
 item1 = Item("Смартфон", 10000, 20)
 item2 = Item("Ноутбук", 20000, 5)
 
+@pytest.fixture
+def exempl():
+    """Экземпляр класса для теста"""
+    return Item("Название", 1, 2)
+
 def test_calculate_total_price():
     assert item1.calculate_total_price() == 200000
     assert item2.calculate_total_price() == 100000
@@ -27,3 +32,8 @@ def test_instantiate_from_csv():
 def test_string_to_number():
     assert Item.string_to_number('5') == 5
     assert Item.string_to_number('5.0') == 5
+
+def test_repr(exempl):
+    assert repr(exempl) == "Item('Название', 1, 2)"
+def test_str(exempl):
+    assert str(exempl) == 'Название'
