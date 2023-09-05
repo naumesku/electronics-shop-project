@@ -64,3 +64,9 @@ class Item:
     @staticmethod
     def string_to_number(number):
         return int(float(number)//1)
+
+    def __add__(self, other):
+        if isinstance(other, Item):
+            return self.quantity + other.quantity
+        else:
+            raise AssertionError('Складывать можно только экземпляры классов Item или Phone.')
