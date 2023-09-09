@@ -1,10 +1,5 @@
-import pytest
-from src.phone import Phone
+from tests.fixture import phone_exempl
 
-@pytest.fixture
-def phone_exempl():
-    """Экземпляр класса для теста"""
-    return Phone("Название", 100_000, 5, 1)
 
 def test_repr(phone_exempl):
     assert repr(phone_exempl) == "Phone('Название', 100000, 5, 1)"
