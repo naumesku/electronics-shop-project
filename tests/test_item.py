@@ -23,7 +23,7 @@ def test_name():
     assert item1.name == "абрикос"
 
 def test_instantiate_from_csv():
-    item2.instantiate_from_csv('src/items.csv')
+    item2.instantiate_from_csv()
     assert len(Item.all) == 5
 
 def test_string_to_number():

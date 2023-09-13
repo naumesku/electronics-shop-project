@@ -1,5 +1,6 @@
 import os, csv
 from pathlib import Path
+from src.exeptions import InstantiateCSVError
 
 class Item:
     """
@@ -7,7 +8,9 @@ class Item:
     """
     pay_rate = 1.0
     all = []
-
+    PATH_CVS = os.path.join('..', 'src', 'items.csv')
+    # path_end = PATH_CVS.split('/')
+    # file = Path(__file__).parent.parent.joinpath(path_end[0]).joinpath(path_end[1])
     def __init__(self, name: str, price: float, quantity: int) -> None:
         """
         Создание экземпляра класса item.
@@ -21,7 +24,6 @@ class Item:
         self.quantity = quantity
         super().__init__()
 
-
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
 
@@ -31,6 +33,7 @@ class Item:
     @property
     def name(self):
         return self.__name
+
     @name.setter
     def name(self, name):
         if len(name) > 10:
@@ -55,13 +58,16 @@ class Item:
         return discont_prise
 
     @classmethod
-    def instantiate_from_csv(cls, path):
-        path_end = path.split('/')
-        file = Path(__file__).parent.parent.joinpath(path_end[0]).joinpath(path_end[1])
-        with open(os.path.join(file), newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                cls.all.append(cls(row['name'], row['price'], row['quantity']))
+    def instantiate_from_csv(cls):
+        try:
+            with open(os.path.join(cls.PATH_CVS), newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if None in row.values():
+                        raise InstantiateCSVError
+                    cls.all.append(cls(row['name'], row['price'], row['quantity']))
+        except FileNotFoundError:
+            raise FileNotFoundError('Отсутствует файл item.csv')
 
     @staticmethod
     def string_to_number(number):
